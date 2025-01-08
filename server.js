@@ -797,37 +797,6 @@ app.get('/api/validate-id/:id', async (req, res) => {
 });
 
 
-// // API for validating and deleting reservation by exit_id
-// app.get('/api/validate-exit-id/:exit_id', async (req, res) => {
-//   const exit_id = req.params.exit_id;
-
-//   // Validate exit_id format (if necessary)
-//   if (!exit_id) {
-//     return res.status(400).json({ valid: false, message: 'exit_id is required' });
-//   }
-
-//   try {
-//     // Check if the exit_id exists
-//     const exists = await ReservationModel.exists({ exit_id });
-
-//     if (exists) {
-//       // Exit ID exists; deleting reservation
-//       const deletedReservation = await ReservationModel.findOneAndDelete({ exit_id });
-
-//       return res.status(200).json({
-//         valid: true,
-//         message: 'exit_id is valid and reservation deleted successfully',
-//         reservation: deletedReservation
-//       });
-//     } else {
-//       return res.status(404).json({ valid: false, message: 'exit_id not found' });
-//     }
-//   } catch (error) {
-//     console.error('Error validating exit_id:', error);
-//     return res.status(500).json({ valid: false, message: 'Error validating exit_id', error });
-//   }
-// });
-
 // API for validating and deleting reservation by exit_id
 app.get('/api/validate-exit-id/:exit_id', async (req, res) => {
   const exit_id = req.params.exit_id;
@@ -842,15 +811,11 @@ app.get('/api/validate-exit-id/:exit_id', async (req, res) => {
     const exists = await ReservationModel.exists({ exit_id });
 
     if (exists) {
-      // Wait for 10 seconds before deleting the reservation
-      await new Promise(resolve => setTimeout(resolve, 10000)); // 10000 ms = 10 seconds
-
-      // Exit ID exists; deleting reservation after the delay
+      // Exit ID exists; deleting reservation
       const deletedReservation = await ReservationModel.findOneAndDelete({ exit_id });
 
       return res.status(200).json({
         valid: true,
-        DQR: true,  // Set DQR to true if the exit_id is valid
         message: 'exit_id is valid and reservation deleted successfully',
         reservation: deletedReservation
       });
@@ -862,6 +827,41 @@ app.get('/api/validate-exit-id/:exit_id', async (req, res) => {
     return res.status(500).json({ valid: false, message: 'Error validating exit_id', error });
   }
 });
+
+// // API for validating and deleting reservation by exit_id
+// app.get('/api/validate-exit-id/:exit_id', async (req, res) => {
+//   const exit_id = req.params.exit_id;
+
+//   // Validate exit_id format (if necessary)
+//   if (!exit_id) {
+//     return res.status(400).json({ valid: false, message: 'exit_id is required' });
+//   }
+
+//   try {
+//     // Check if the exit_id exists
+//     const exists = await ReservationModel.exists({ exit_id });
+
+//     if (exists) {
+//       // Wait for 10 seconds before deleting the reservation
+//       await new Promise(resolve => setTimeout(resolve, 10000)); // 10000 ms = 10 seconds
+
+//       // Exit ID exists; deleting reservation after the delay
+//       const deletedReservation = await ReservationModel.findOneAndDelete({ exit_id });
+
+//       return res.status(200).json({
+//         valid: true,
+//         DQR: true,  // Set DQR to true if the exit_id is valid
+//         message: 'exit_id is valid and reservation deleted successfully',
+//         reservation: deletedReservation
+//       });
+//     } else {
+//       return res.status(404).json({ valid: false, message: 'exit_id not found' });
+//     }
+//   } catch (error) {
+//     console.error('Error validating exit_id:', error);
+//     return res.status(500).json({ valid: false, message: 'Error validating exit_id', error });
+//   }
+// });
 
 
 
